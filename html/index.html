@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
 {% block body %}
-    <ul>
-    {% for item in data %}
-        <li>{{ item }}</li>
+	<div class="space">
+	{% for item in data %}
+        {{ item }}
     {% endfor %}
-    </ul>
+    </div>
 {% endblock %}
+
