@@ -19,14 +19,14 @@ class GainersAndLosers(object):
       
         resp = requests.get(urlGainers)
         json_data_gainers = json.loads(resp.text)
-        #resp = requests.get(urlLosers)
-        #json_data_losers = json.loads(resp.text)
+        resp = requests.get(urlLosers)
+        json_data_losers = json.loads(resp.text)
         r.hmset("topGainers", json_data_gainers)
-        #r.hmset("topLosers", json_data_losers)
-        print "Redis updated"
-        #topLosers = r.hgetall("topLosers")
+        r.hmset("topLosers", json_data_losers)
+        topLosers = r.hgetall("topLosers")
         topGainers = r.hgetall("topGainers")
-        markup = ""
+        markup = """ <h4><b> Top Gainers </b></h4> """
+          
         topGainers = topGainers['data'].replace("u'","\"")
         topGainers = topGainers.replace("'","\"")
         jsonTopGainers = json.loads(topGainers)
@@ -40,14 +40,34 @@ class GainersAndLosers(object):
                 <p>Open: """+data["openPrice"]+"""</p> 
                 <p>High: """+data["highPrice"]+"""</p> 
                 <p>Low: """+data["lowPrice"]+"""</b></p> 
-                <p>Previous Price: """+data["previousPrice"]+"""</p> 
-                <p>Net Price: """+data["netPrice"]+"""</p> 
+                <p>Previous Price: """+data["previousPrice"]+"""</p>    
                 <p>Traded Quantity: """+data["tradedQuantity"]+"""</p>
                 <p>Turnover: """+data["turnoverInLakhs"]+""" Lakhs</p> 
-                <p>"""+data["lastCorpAnnouncementDate"]+"""</p> 
-                <p>"""+data["lastCorpAnnouncement"]+"""</p>
+                <p>"""+data["lastCorpAnnouncementDate"]+"""</p>
             </div>
             </div>"""
+            
+        topLosers = topLosers['data'].replace("u'","\"")
+        topLosers = topLosers.replace("'","\"")
+        jsonTopLosers = json.loads(topLosers)
+        markup += """ <h4><b> Top Losers </b></h4> """
+        for data in jsonTopLosers:
+            #percentageChange = ((float(data["ltp"])-float(data["previousPrice"]))/float(data["previousPrice"]))*100
+            markup += """ <div class="card">
+            <img src="./assets/img_avatar.png" alt="Avatar" style="width:10%">
+            <div class="container">
+                <h4><b>Symbol: """+data["symbol"]+"""</b></h4>
+                <p>LTP: """+data["ltp"]+"""</p> 
+                <p>Open: """+data["openPrice"]+"""</p> 
+                <p>High: """+data["highPrice"]+"""</p> 
+                <p>Low: """+data["lowPrice"]+"""</b></p> 
+                <p>Previous Price: """+data["previousPrice"]+"""</p>
+                <p>Traded Quantity: """+data["tradedQuantity"]+"""</p>
+                <p>Turnover: """+data["turnoverInLakhs"]+""" Lakhs</p> 
+                <p>"""+data["lastCorpAnnouncementDate"]+"""</p>
+            </div>
+            </div>"""
+        
         data_to_show = [markup]
         tmpl = env.get_template('index.html')
         return tmpl.render(data=data_to_show)
