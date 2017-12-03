@@ -3,8 +3,6 @@ import os
 import json
 import requests
 import redis
-import ast
-from bs4 import BeautifulSoup
 from jinja2 import Environment, FileSystemLoader
 env = Environment(loader=FileSystemLoader('html'))
 urlGainers = "https://www.nseindia.com/live_market/dynaContent/live_analysis/gainers/niftyGainers1.json"
