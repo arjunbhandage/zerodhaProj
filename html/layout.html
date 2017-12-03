@@ -4,9 +4,16 @@
         <meta charset="utf-8">
         <title>Nifty 50</title>    
         <link rel="stylesheet" href="/assets/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     </head>
     <body>
-		<h2 class="gainersLosersHeader">Top Gainers and Losers Nifty 50</h2>
+        <div class="container" style="padding: 10px;">
+		<nav class="navbar navbar-light bg-light" style="margin-bottom: 10px;">
+  <span class="navbar-text">
+    Top Gainers And Losers Nifty 50
+  </span>
+</nav>
         {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

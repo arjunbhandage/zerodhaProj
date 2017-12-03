@@ -23,17 +23,16 @@ class GainersAndLosers(object):
         r.hmset("topLosers", json_data_losers)
         topLosers = r.hgetall("topLosers")
         topGainers = r.hgetall("topGainers")
-        markup = """ <h4><b> Top Gainers </b></h4> """
+        markup = """ <div class="card-columns">"""
           
         topGainers = topGainers['data'].replace("u'","\"")
         topGainers = topGainers.replace("'","\"")
         jsonTopGainers = json.loads(topGainers)
         for data in jsonTopGainers:
             #percentageChange = ((float(data["ltp"])-float(data["previousPrice"]))/float(data["previousPrice"]))*100
-            markup += """ <div class="card">
-            <img src="./assets/img_avatar.png" alt="Avatar" style="width:10%">
-            <div class="container">
-                <h4><b>Symbol: """+data["symbol"]+"""</b></h4>
+            markup += """ <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Symbol: """+data["symbol"]+"""</h4>
                 <p>LTP: """+data["ltp"]+"""</p> 
                 <p>Open: """+data["openPrice"]+"""</p> 
                 <p>High: """+data["highPrice"]+"""</p> 
@@ -48,13 +47,11 @@ class GainersAndLosers(object):
         topLosers = topLosers['data'].replace("u'","\"")
         topLosers = topLosers.replace("'","\"")
         jsonTopLosers = json.loads(topLosers)
-        markup += """ <h4><b> Top Losers </b></h4> """
         for data in jsonTopLosers:
             #percentageChange = ((float(data["ltp"])-float(data["previousPrice"]))/float(data["previousPrice"]))*100
-            markup += """ <div class="card">
-            <img src="./assets/img_avatar.png" alt="Avatar" style="width:10%">
-            <div class="container">
-                <h4><b>Symbol: """+data["symbol"]+"""</b></h4>
+            markup += """ <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Symbol: """+data["symbol"]+"""</h4>
                 <p>LTP: """+data["ltp"]+"""</p> 
                 <p>Open: """+data["openPrice"]+"""</p> 
                 <p>High: """+data["highPrice"]+"""</p> 
@@ -62,10 +59,10 @@ class GainersAndLosers(object):
                 <p>Previous Price: """+data["previousPrice"]+"""</p>
                 <p>Traded Quantity: """+data["tradedQuantity"]+"""</p>
                 <p>Turnover: """+data["turnoverInLakhs"]+""" Lakhs</p> 
-                <p>"""+data["lastCorpAnnouncementDate"]+"""</p>
+                <p>Last Corp Announcement date: """+data["lastCorpAnnouncementDate"]+"""</p>
             </div>
             </div>"""
-        
+        markup += """</div>"""
         data_to_show = [markup]
         tmpl = env.get_template('index.html')
         return tmpl.render(data=data_to_show)
